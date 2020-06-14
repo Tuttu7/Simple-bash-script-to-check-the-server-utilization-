@@ -1,8 +1,13 @@
 ###  This script displays Disk, memory utilization, last logins, most consuming process,load average & uptime of the Ubuntu based system
 
 ```
-#!/bin/bash
-# This script displays Disk, memory utilization of the Ubuntu based system along with last logins, most consuming process & uptime
+seperator="--------------------------"
+
+uptime=`uptime | xargs | awk '{ print $1 " "  $2 " " $3" "$4 }'`
+currently_connected=`w | xargs | awk '{ print $4 " "$5 " " $6 }'`
+disk_usage=`df -H | xargs | awk '{ print "Total size / Used / Available : "  $21 " / " $22 " / " $23}'`
+memory_usage=`free -mh | xargs | awk '{ print "Total/Free memory : " $8 " / " $12 " MB " }'`
+load_average=`w | xargs | awk '{ print  $8 $9 $10}'`
 
 date;
 
@@ -12,50 +17,54 @@ echo "uptime : "
 
 echo " "
 
-uptime | xargs | awk '{ print $1 " "  $2 " " $3 }'
+echo $uptime
 
 
-echo "-----------------------------"
+echo $seperator
 
 echo "currently connected : "
 
 echo " "
 
-w | xargs | awk '{ print $4 " " $5 }'
+echo $currently_connected
 
-echo "-----------------------------"
+echo $seperator
 
 echo "last logins : "
 
 echo " "
 
+
 last -a | head -3
 
-echo "------------------------------"
+echo $seperator
 
 echo " Disk & memory usage : "
 
 echo " "
 
-free -mh | xargs | awk '{ print "Total/Free memory : " $8 " / " $12 " MB " }'
+echo $disk_usage
 
-df -H | xargs | awk '{ print "Total size / Used / Available : "  $21 " / " $22 " / " $23}'
+echo $memory_usage
 
 
-echo "-------------------------------"
+echo $seperator
 
 
 echo " Load average : " 
 
-w | xargs | awk '{ print $8 $9 $10 }'
+echo $load_average
 
-echo "-------------------------------"
+echo $seperator
 
 echo " Most consuming process :  "
 
 echo " "
 
 
+
+
 top -b | head -10 | tail -4
+
 
 ```
